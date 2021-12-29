@@ -1,0 +1,56 @@
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+
+	/*    Use Graph:
+
+	         1 ----- 5
+           /       /   \
+         0       /      4
+           \   /       /  \
+             2 ----- 3 --- 6
+
+
+	*/
+public class FindPathsGraph {
+	
+	public static void printAllPaths(HashMap<Integer, List<Integer>> graph, boolean[] solution, int start, int end) {
+		FindPath(graph, start, end, solution, "");
+	}
+	// solution []: 
+	// graph : 
+	public static void FindPath(HashMap<Integer, List<Integer>> graph, int start, int end, boolean[] solution, String path) {
+		solution[start] = true;
+		String newPath = path + "->" + start;
+		List<Integer> neighbors = graph.get(start);
+		
+		for (int i = 0; i < neighbors.size(); i++) {
+			int node = neighbors.get(i);
+			if (!solution[node] && node != end) {
+				FindPath(graph, node, end, solution, newPath);
+			}
+			else if (node == end) {
+				System.out.println(newPath + "->" + end);
+			}
+		}
+		solution[start] = false; // backtracking
+	}
+
+	//  Main
+	public static void main(String[] args) {
+		HashMap<Integer, List<Integer>> graph = new HashMap<>();
+		graph.put(0, Arrays.asList(new Integer[]{2, 1}));
+		graph.put(1, Arrays.asList(new Integer[]{5, 0}));
+		graph.put(2, Arrays.asList(new Integer[]{5, 3, 0}));
+		graph.put(3, Arrays.asList(new Integer[]{6, 4, 2}));
+		graph.put(4, Arrays.asList(new Integer[]{6, 5, 3}));
+		graph.put(5, Arrays.asList(new Integer[]{4, 1, 2}));
+		graph.put(6, Arrays.asList(new Integer[]{4, 3}));
+		boolean[] solution = new boolean[7];
+		System.out.println("Print all Paths On the Graph from node 0 to 6: \n");
+		printAllPaths(graph, solution, 0, 6);
+		System.out.println("--------------------------------------");
+
+	}
+}
+//Độ phức tạp thời gian phụ thuộc vào kết nối giữa hai nút.
